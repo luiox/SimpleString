@@ -1,16 +1,32 @@
-//
+﻿//
 // Created by Canrad on 2023/10/11.
 //
 
 #ifndef SIMPLE_STRING_STRING_H
 #define SIMPLE_STRING_STRING_H
 
+#include <iostream>
 
+//using size_t = unsigned int;
 
-class string {
+namespace bcat {
+    class string {
+    private:
+        char *m_str;
+        size_t m_length;
+        size_t m_capacity;
+    public:
+        string();
+        string(const char *str);
+        ~string();
 
-};
+        size_t length() const;
 
+        void operator =(const char* other);
+        bool operator==(const string&other);
+        friend std::ostream &operator<<(std::ostream &out,string&other);
+    };
 
+}
 
 #endif //SIMPLE_STRING_STRING_H

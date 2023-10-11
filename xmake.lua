@@ -1,0 +1,5 @@
+target("string_test")
+    set_kind("binary")
+    add_includedirs("include")
+    add_files("src/*.cpp")
+    add_files("test/*.cpp")
