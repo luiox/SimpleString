@@ -20,6 +20,7 @@ namespace bcat {
         string(const char *str);
         ~string();
 
+        const char* c_str();
         size_t length() const;
 
         void operator =(const char* other);

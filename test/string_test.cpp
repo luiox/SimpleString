@@ -22,11 +22,13 @@ int main() {
         bcat::string str2("str2");
         bcat::string str3="str3";
         str1 = "str1";
+        str1 = "str2";
         cout << str2 << str3.length() << endl;
-        if(!(str1 == str2)){
+        if(str1 == str2){
             cout << "str2 = str3 is true" << endl;
         }
         cout<< "ok"<<endl;
+        printf("%s", str1.c_str());
     }
 
 
