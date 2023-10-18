@@ -17,13 +17,17 @@ namespace bcat {
         size_t m_capacity;
     public:
         string();
-        string(const char *str);
+        explicit string(const char *str);
         ~string();
 
         const char* c_str();
-        size_t length() const;
+        [[nodiscard]] size_t length() const;
+        string& append(const char* str);
+        string& append(string& str);
 
-        void operator =(const char* other);
+        string& trim();
+
+        string& operator =(const char* other);
         bool operator==(const string&other);
         friend std::ostream &operator<<(std::ostream &out,string&other);
     };

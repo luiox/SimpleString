@@ -2,6 +2,7 @@
 // Created by Canrad on 2023/10/11.
 //
 #include <cstring>
+#include <cctype>
 #include <utility/string.h>
 
 namespace bcat {
@@ -33,7 +34,7 @@ namespace bcat {
         return m_length;
     }
 
-    void string::operator =(const char* other)
+    string& string::operator =(const char* other)
     {
         if (m_str == nullptr) {
             m_length = strlen(other);
@@ -50,6 +51,7 @@ namespace bcat {
   
         }
         strcpy(m_str, other);
+        return *this;
     }
 
     bool string::operator==(const string &other) {
@@ -61,7 +63,48 @@ namespace bcat {
         return out;
     }
 
+    string &string::append(const char *str) {
+        size_t n = strlen(str);
+        if (m_length + n > m_capacity) {
+            size_t new_capacity = m_length + n + 1;
+            auto new_ptr = new char[new_capacity];
+            strcpy(new_ptr, m_str);
+            delete[] m_str;
+            m_str = new_ptr;
+        }
+        strcat(m_str, str);
+        return *this;
+    }
 
+    string &string::append(string &str) {
+        append(str.c_str());
+        return *this;
+    }
+
+    string &string::trim() {
+        if (m_length == 0) {
+            return *this; // 空字符串，无需操作
+        }
+
+        auto start = 0;
+        int end = static_cast<int>(m_length) - 1;
+
+        // 从开头找到第一个非空白字符
+        while (start < m_length && isspace(m_str[start])) {
+            start++;
+        }
+
+        // 从结尾找到第一个非空白字符
+        while (end >= 0 && isspace(m_str[end])) {
+            end--;
+        }
+
+        // 更新字符串的长度和内容
+        m_length = end - start + 1;
+        memmove(m_str, m_str + start, m_length);
+        m_str[m_length] = '\0';
+        return *this;
+    }
 
 
 }
