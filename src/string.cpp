@@ -7,6 +7,30 @@
 #include <utility/string.h>
 
 namespace bcat {
+    void string::expand(size_t new_capacity) {
+        if (new_capacity <= m_capacity) {
+            // 新的容量小于等于当前容量，什么也不做
+            return;
+        }
+        char *new_str = new char[new_capacity]; // 分配新内存
+        strcpy(new_str, m_str);                 // 复制原数据到新内存
+        delete[] m_str;                         // 释放原内存
+        m_str = new_str;                        // 指向新内存
+        m_capacity = new_capacity;              // 更新容量值
+    }
+
+    void string::copy(const char *other) {
+        if (m_str != other) { // 避免自我赋值
+            size_t other_length = strlen(other);
+            if (other_length >= m_capacity) { // 如果输入字符串长度超过当前容量，进行扩容
+                size_t new_capacity = other_length + 1;
+                expand(new_capacity);
+            }
+            strcpy(m_str, other); // 复制输入字符串到当前对象
+            m_length = other_length;   // 更新长度值
+        }
+    }
+
     string::string()
             : m_str(nullptr),
               m_length(0),
@@ -38,8 +62,17 @@ namespace bcat {
         strcpy(m_str, str);
     }
 
+    string::string(const string &str) {
+        size_t length = str.m_length;
+        m_length = length;
+        m_capacity = m_length + 1;
+        m_str = new char[m_capacity];
+        strcpy(m_str, str.m_str);
+    }
+
     string::~string() {
         delete[] m_str;
+        m_str = nullptr;
     }
 
     const char *string::c_str() {
@@ -56,33 +89,12 @@ namespace bcat {
     }
 
     string &string::operator=(const char *other) {
-        if (m_str == nullptr) {
-            m_length = strlen(other);
-            m_capacity = m_length + 1;
-            m_str = new char[m_capacity];
-        } else if (m_capacity - 1 < strlen(other)) { // 需要扩容
-            // 回收旧内存
-            delete[] m_str;
-            // 计算需要的新内存大小
-            m_length = strlen(other);
-            m_capacity = (m_capacity * 2 > m_length + 1) ? m_capacity * 2 : m_length + 1;
-            m_str = new char[m_capacity];
-
-        }
-        strcpy(m_str, other);
+        copy(other);
         return *this;
     }
 
     string &string::operator=(const string &other) {
-        // 释放当前对象的内存
-        delete[] m_str;
-
-        // 深拷贝 other 对象的数据
-        m_length = other.m_length;
-        m_capacity = other.m_capacity;
-        m_str = new char[m_capacity];
-        strcpy(m_str, other.m_str);
-
+        copy(other.m_str);
         return *this;
     }
 
@@ -90,8 +102,7 @@ namespace bcat {
         return compare(other);
     }
 
-    char& string::operator[](int index)
-    {
+    char &string::operator[](int index) {
         if (index < 0 || index >= m_length) {
             throw std::out_of_range("Index out of range.");
             //return m_str[0];
@@ -105,15 +116,18 @@ namespace bcat {
     }
 
     string &string::append(const char *str) {
-        size_t n = strlen(str);
-        if (m_length + n > m_capacity) {
-            size_t new_capacity = m_length + n + 1;
-            auto new_ptr = new char[new_capacity];
-            strcpy(new_ptr, m_str);
-            delete[] m_str;
-            m_str = new_ptr;
+        size_t new_length = m_length + strlen(str); // 计算拼接后的长度
+
+        // 如果当前容量不足以容纳拼接后的字符串，进行扩容
+        if (new_length >= m_capacity) {
+            // 新容量为原容量和加上新大小后较大的那个，减少扩容的次数。
+            size_t new_capacity = m_capacity * 2 > new_length ? m_capacity * 2 : new_length + 1;
+            expand(new_capacity);
         }
-        strcat(m_str, str);
+
+        strcat(m_str, str); // 拼接字符串
+        m_length = new_length;   // 更新长度
+
         return *this;
     }
 

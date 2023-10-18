@@ -42,16 +42,15 @@ int main() {
             cout << "str2 = str3 is true" << endl;
         }
         bcat::string s("12");
-        str1.append(str2);
-        //append(str3).append("str");
-        cout << str1;
+        str1.append(str2).append(str3).append("str");
+        cout << "append:" << str1;
         cout << "ok" << endl;
         printf("%s", str1.c_str());
 
-        // bcat::string str12 = str1;
-        // cout << "str12:" << str12 << endl;
-        // str12 = "123";
-        // cout << "str12:" << str12 << endl;
+        bcat::string str12{str1};
+        cout << "str12:" << str12 << endl;
+        str12 = "123";
+        cout << "str12:" << str12 << endl;
     }
 
 

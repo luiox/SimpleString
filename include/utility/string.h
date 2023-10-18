@@ -17,6 +17,13 @@ namespace bcat {
         char *m_str;
         size_t m_length;
         size_t m_capacity;
+
+        // 扩容函数
+        void expand(size_t new_capacity);
+
+        // 拷贝函数
+        void copy(const char *other);
+
     public:
         string();
 
@@ -25,6 +32,8 @@ namespace bcat {
         explicit string(int val);
 
         explicit string(const char *str);
+
+        explicit string(const string &str);
 
         ~string();
 
@@ -60,7 +69,7 @@ namespace bcat {
 
         bool operator==(const string &other);
 
-        char& operator[](int index);
+        char &operator[](int index);
 
         friend std::ostream &operator<<(std::ostream &out, string &other);
     };
