@@ -134,14 +134,14 @@ namespace bcat {
         }
     }
 
-    string_iterator string::begin()
+    string_iterator string::begin() noexcept
     {
-        return string_iterator(m_str);
+        return {m_str};
     }
     
-    string_iterator string::end()
+    string_iterator string::end() noexcept
     {
-        return string_iterator(m_str+m_length);
+        return {m_str+m_length};
     }
 
 

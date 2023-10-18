@@ -10,6 +10,8 @@
 //using size_t = unsigned int;
 
 namespace bcat {
+    class string_iterator;
+
     class string {
     private:
         char *m_str;
@@ -23,15 +25,15 @@ namespace bcat {
         // 获取C风格的字符串指针
         const char* c_str();
         // 获取字符串长度
-        size_t length() const;
+        [[nodiscard]] size_t length() const;
         // 获取容量
-        size_t capacity() const;
+        [[nodiscard]] size_t capacity() const;
         // 拼接字符串
         string& append(const char* str);
         string& append(string& str);
 
         string& trim();
-        bool compare(const string& other) const;
+        [[nodiscard]] bool compare(const string& other) const;
         string& to_lower_case();
         string& to_upper_case();
 
