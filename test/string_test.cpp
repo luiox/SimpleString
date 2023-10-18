@@ -19,7 +19,9 @@ int main() {
 #endif
     {
         bcat::string str1;
-        bcat::string str2("str2");
+        bcat::string str2("   str2      ");
+        str2.trim();
+        cout << str2 << endl;
         bcat::string str3("str3");
         str1 = "str1";
         str1 = "str2";

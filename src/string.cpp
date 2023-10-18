@@ -34,6 +34,11 @@ namespace bcat {
         return m_length;
     }
 
+    size_t string::capacity() const
+    {
+        return m_capacity;
+    }
+
     string& string::operator =(const char* other)
     {
         if (m_str == nullptr) {
@@ -55,7 +60,7 @@ namespace bcat {
     }
 
     bool string::operator==(const string &other) {
-        return m_length == other.length() && strcmp(m_str, other.m_str) == 0;
+        return compare(other);
     }
 
     std::ostream &operator<<(std::ostream &out, string &other) {
@@ -106,7 +111,54 @@ namespace bcat {
         return *this;
     }
 
+    bool string::compare(const string& other) const
+    {
+        return m_length == other.length() && strcmp(m_str, other.m_str) == 0;
+    }
 
+    string& string::to_lower_case()
+    {
+        for (int i = 0; i < m_length; i++) {
+            if (isalpha(static_cast<int>(m_str[i]))) {
+                m_str[i] = static_cast<char>(tolower(static_cast<int>(m_str[i])));
+            }
+        }
+    }
+
+    string& string::to_upper_case()
+    {
+        for (int i = 0; i < m_length; i++) {
+            if (isalpha(static_cast<int>(m_str[i]))) {
+                m_str[i] = static_cast<char>(toupper(static_cast<int>(m_str[i])));
+            }
+        }
+    }
+
+    string_iterator string::begin()
+    {
+        return string_iterator(m_str);
+    }
+    
+    string_iterator string::end()
+    {
+        return string_iterator(m_str+m_length);
+    }
+
+
+////////////////////////////////////////////////////////////////////////////////
+    string_iterator::string_iterator(char* p) : ptr(p) {}
+    char& string_iterator::operator*() const {
+        return *ptr;
+    }
+
+    string_iterator& string_iterator::operator++() {
+        ++ptr;
+        return *this;
+    }
+
+    bool string_iterator::operator!=(const string_iterator& other) const {
+        return ptr != other.ptr;
+    }
 }
 
 
