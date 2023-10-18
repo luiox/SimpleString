@@ -3,6 +3,7 @@
 //
 #include <cstring>
 #include <cctype>
+#include <exception>
 #include <utility/string.h>
 
 namespace bcat {
@@ -87,6 +88,15 @@ namespace bcat {
 
     bool string::operator==(const string &other) {
         return compare(other);
+    }
+
+    char& string::operator[](int index)
+    {
+        if (index < 0 || index >= m_length) {
+            throw std::out_of_range("Index out of range.");
+            //return m_str[0];
+        }
+        return m_str[index];
     }
 
     std::ostream &operator<<(std::ostream &out, string &other) {

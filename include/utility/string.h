@@ -60,6 +60,8 @@ namespace bcat {
 
         bool operator==(const string &other);
 
+        char& operator[](int index);
+
         friend std::ostream &operator<<(std::ostream &out, string &other);
     };
 

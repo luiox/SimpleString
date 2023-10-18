@@ -20,10 +20,8 @@ int main() {
 #endif
     {
         bcat::string str1{2103450345};
-        bcat::string str12 = str1;
-        cout << "str12:" << str12 << endl;
-        //str12 = "123";
-        cout << "str12:" << str12 << endl;
+        str1[2] = '1';
+        cout << "str1[2]:" << str1[2] << endl;
         for (auto i: str1) {
             cout << i << endl;
         }
@@ -49,6 +47,11 @@ int main() {
         cout << str1;
         cout << "ok" << endl;
         printf("%s", str1.c_str());
+
+        // bcat::string str12 = str1;
+        // cout << "str12:" << str12 << endl;
+        // str12 = "123";
+        // cout << "str12:" << str12 << endl;
     }
 
 
