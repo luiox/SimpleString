@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <string>
 #include <utility/string.h>
+
 using std::cout;
 using std::endl;
 
@@ -18,22 +19,31 @@ int main() {
     }
 #endif
     {
-        bcat::string str1;
+        bcat::string str1{2103450345};  
+        for (auto i : str1) {
+            cout << i << endl;
+        }
         bcat::string str2("   str2      ");
         str2.trim();
+        cout << str1 << endl;
         cout << str2 << endl;
+        str2.to_upper_case();
+        cout << str2 << endl;
+        str2.to_lower_case();
+        cout << str2 << endl;
+        cout << "capacity:" << str2.capacity() << endl;
         bcat::string str3("str3");
         str1 = "str1";
         str1 = "str2";
         cout << str2 << str3.length() << endl;
-        if(str1 == str2){
+        if (str1 == str2) {
             cout << "str2 = str3 is true" << endl;
         }
         bcat::string s("12");
         str1.append(str2);
         //append(str3).append("str");
         cout << str1;
-        cout<< "ok"<<endl;
+        cout << "ok" << endl;
         printf("%s", str1.c_str());
     }
 

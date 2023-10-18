@@ -13,6 +13,23 @@ namespace bcat {
 
     }
 
+    string::string(char val) {
+        m_length = 1;
+        m_capacity = 2;
+        m_str = new char[m_capacity];
+        m_str[0] = val;
+        m_str[1] = '\0';
+    }
+
+    string::string(int val) {
+        char buffer[15];
+        snprintf(buffer, 15, "%d", val);
+        m_length = strlen(buffer);
+        m_capacity = m_length + 1;
+        m_str = new char[m_capacity];
+        strcpy(m_str, buffer);
+    }
+
     string::string(const char *str) {
         m_length = strlen(str);
         m_capacity = m_length + 1;
@@ -24,8 +41,7 @@ namespace bcat {
         delete[] m_str;
     }
 
-    const char* string::c_str()
-    {
+    const char *string::c_str() {
         m_str[m_length] = '\0';
         return m_str;
     }
@@ -34,26 +50,23 @@ namespace bcat {
         return m_length;
     }
 
-    size_t string::capacity() const
-    {
+    size_t string::capacity() const {
         return m_capacity;
     }
 
-    string& string::operator =(const char* other)
-    {
+    string &string::operator=(const char *other) {
         if (m_str == nullptr) {
             m_length = strlen(other);
             m_capacity = m_length + 1;
             m_str = new char[m_capacity];
-        }
-        else if(m_capacity-1 < strlen(other)){ // 需要扩容
+        } else if (m_capacity - 1 < strlen(other)) { // 需要扩容
             // 回收旧内存
             delete[] m_str;
             // 计算需要的新内存大小
             m_length = strlen(other);
             m_capacity = (m_capacity * 2 > m_length + 1) ? m_capacity * 2 : m_length + 1;
             m_str = new char[m_capacity];
-  
+
         }
         strcpy(m_str, other);
         return *this;
@@ -111,52 +124,50 @@ namespace bcat {
         return *this;
     }
 
-    bool string::compare(const string& other) const
-    {
+    bool string::compare(const string &other) const {
         return m_length == other.length() && strcmp(m_str, other.m_str) == 0;
     }
 
-    string& string::to_lower_case()
-    {
+    string &string::to_lower_case() {
         for (int i = 0; i < m_length; i++) {
             if (isalpha(static_cast<int>(m_str[i]))) {
                 m_str[i] = static_cast<char>(tolower(static_cast<int>(m_str[i])));
             }
         }
+        return *this;
     }
 
-    string& string::to_upper_case()
-    {
+    string &string::to_upper_case() {
         for (int i = 0; i < m_length; i++) {
             if (isalpha(static_cast<int>(m_str[i]))) {
                 m_str[i] = static_cast<char>(toupper(static_cast<int>(m_str[i])));
             }
         }
+        return *this;
     }
 
-    string_iterator string::begin() noexcept
-    {
+    string_iterator string::begin() noexcept {
         return {m_str};
     }
-    
-    string_iterator string::end() noexcept
-    {
-        return {m_str+m_length};
+
+    string_iterator string::end() noexcept {
+        return {m_str + m_length};
     }
 
 
 ////////////////////////////////////////////////////////////////////////////////
-    string_iterator::string_iterator(char* p) : ptr(p) {}
-    char& string_iterator::operator*() const {
+    string_iterator::string_iterator(char *p) : ptr(p) {}
+
+    char &string_iterator::operator*() const {
         return *ptr;
     }
 
-    string_iterator& string_iterator::operator++() {
+    string_iterator &string_iterator::operator++() {
         ++ptr;
         return *this;
     }
 
-    bool string_iterator::operator!=(const string_iterator& other) const {
+    bool string_iterator::operator!=(const string_iterator &other) const {
         return ptr != other.ptr;
     }
 }
