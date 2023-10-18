@@ -19,8 +19,12 @@ int main() {
     }
 #endif
     {
-        bcat::string str1{2103450345};  
-        for (auto i : str1) {
+        bcat::string str1{2103450345};
+        bcat::string str12 = str1;
+        cout << "str12:" << str12 << endl;
+        //str12 = "123";
+        cout << "str12:" << str12 << endl;
+        for (auto i: str1) {
             cout << i << endl;
         }
         bcat::string str2("   str2      ");

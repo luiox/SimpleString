@@ -56,6 +56,8 @@ namespace bcat {
 
         string &operator=(const char *other);
 
+        string &operator=(const string &other);
+
         bool operator==(const string &other);
 
         friend std::ostream &operator<<(std::ostream &out, string &other);

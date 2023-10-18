@@ -72,6 +72,19 @@ namespace bcat {
         return *this;
     }
 
+    string &string::operator=(const string &other) {
+        // 释放当前对象的内存
+        delete[] m_str;
+
+        // 深拷贝 other 对象的数据
+        m_length = other.m_length;
+        m_capacity = other.m_capacity;
+        m_str = new char[m_capacity];
+        strcpy(m_str, other.m_str);
+
+        return *this;
+    }
+
     bool string::operator==(const string &other) {
         return compare(other);
     }
