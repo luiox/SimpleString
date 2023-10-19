@@ -159,7 +159,7 @@ namespace bcat {
         // 如果当前容量不足以容纳拼接后的字符串，进行扩容
         if (new_length >= m_capacity) {
             // 新容量为原容量和加上新大小后较大的那个，减少扩容的次数。
-            size_t new_capacity = m_capacity * 2 > new_length ? m_capacity * 2 : new_length + 1;
+            auto new_capacity = m_capacity * 2 > new_length ? m_capacity * 2 : new_length + 1;
             expand(new_capacity);
         }
 
@@ -171,6 +171,32 @@ namespace bcat {
 
     string &string::append(string &str) {
         append(str.c_str());
+        return *this;
+    }
+
+    string & string::insert(const char * str, int index) {
+        if (index < 0 || index > m_length) {
+            throw std::out_of_range("Index out of range.");
+        }
+        if (index == m_length - 1) {
+            append(str);
+        }
+        else {
+            auto length = strlen(str);
+            if (m_length + length > m_capacity) {
+                expand(m_length + length > m_capacity * 2 ? m_length + length
+                                                          : m_capacity * 2);
+            }
+            memmove(m_str + index+length,m_str+index,m_length-index+1);
+            strncpy(m_str + index, str,length);
+            m_length += length;
+        }
+        return *this;
+    }
+
+    string & string::insert(string & str, int index) {
+        // 预留优化空间，如果需要可以减少一次strlen
+        insert(str.c_str(), index);
         return *this;
     }
 

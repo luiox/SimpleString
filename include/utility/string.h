@@ -54,6 +54,11 @@ namespace bcat {
 
         string &append(string &str);
 
+        // 插入字符串
+        string & insert(const char * str, int index);
+
+        string & insert(string & str, int index);
+
         string &trim();
 
         [[nodiscard]] bool compare(const string &other) const;
