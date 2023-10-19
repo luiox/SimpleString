@@ -62,7 +62,7 @@ namespace bcat {
         strcpy(m_str, str);
     }
 
-    string::string(const string &str) {
+    string::string(string &str) {
         size_t length = str.m_length;
         m_length = length;
         m_capacity = m_length + 1;
@@ -117,6 +117,22 @@ namespace bcat {
 
     size_t string::capacity() const {
         return m_capacity;
+    }
+
+    bool
+    string::resize(int capacity) {
+        if (capacity < 0 || capacity < m_length + 1) {
+            return false;
+        }
+        if (m_length == 0) {
+            auto new_str = new char[capacity];
+            delete m_str;
+            m_str = new_str;
+            m_capacity = capacity;
+        } else {
+            expand(capacity);
+        }
+        return true;
     }
 
     string &string::operator=(const char *other) {
@@ -179,7 +195,7 @@ namespace bcat {
                 expand(m_length + length > m_capacity * 2 ? m_length + length
                                                           : m_capacity * 2);
             }
-            memmove(m_str + index + length-1, m_str + index-1, m_length - index + 1);
+            memmove(m_str + index + length - 1, m_str + index - 1, m_length - index + 1);
             strncpy(m_str + index, str, length);
             m_length += length;
         }
@@ -205,7 +221,7 @@ namespace bcat {
         return *this;
     }
 
-    string& string::replace(const char* find_str, const char* replace_str) {
+    string &string::replace(const char *find_str, const char *replace_str) {
         auto find_size = strlen(find_str);
         auto replace_size = strlen(replace_str);
         auto pos = 0;
@@ -215,7 +231,7 @@ namespace bcat {
                 break;
             }
         }
-        if (m_length - find_size+ replace_size > m_capacity) {
+        if (m_length - find_size + replace_size > m_capacity) {
             expand(m_capacity * 2);
         }
         erase(pos, find_size);
@@ -223,17 +239,16 @@ namespace bcat {
         return *this;
     }
 
-    string& string::replace(string& find_str, string& replace_str) {
+    string &string::replace(string &find_str, string &replace_str) {
         return replace(find_str.m_str, replace_str.m_str);
     }
 
     int
-    string::find(const char * find_str)
-    {
+    string::find(const char *find_str) {
         auto find_size = strlen(find_str);
         auto pos = -1;
         for (int i = 0; i < m_length; i++) {
-            if (0 == strncmp(m_str+i, find_str, find_size)) {
+            if (0 == strncmp(m_str + i, find_str, find_size)) {
                 pos = i;
                 break;
             }
@@ -241,12 +256,17 @@ namespace bcat {
         return pos;
     }
 
-    string&
-    string::substr(int begin, int end)
-    {
-        //string ret("");
-        //return ret;
-        return *this;
+    string
+    string::substr(int begin, int end) const {
+        if (begin < 0 || end < 0 || begin > m_length - 1 || end > m_length - 1
+            || begin > end) {
+            throw std::out_of_range("Invalid range.");
+        }
+        auto size = end - begin + 1;
+        char *const ret = new char[size + 1];
+        strncpy(ret, m_str + begin, size);
+        ret[size] = '\0';
+        return string(ret);
     }
 
     string &string::trim() {

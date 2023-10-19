@@ -33,7 +33,7 @@ namespace bcat {
 
         explicit string(const char *str);
 
-        explicit string(const string &str);
+        string(string &str);
 
         ~string();
 
@@ -49,6 +49,9 @@ namespace bcat {
         // 获取容量
         [[nodiscard]] size_t capacity() const;
 
+        // 改变字符串容量
+        bool resize(int capacity);
+
         // 拼接字符串
         string &append(const char *str);
 
@@ -63,14 +66,15 @@ namespace bcat {
         string &erase(int index, int size = 1);
 
         // 替换字符串
-        string & replace(const char * find_str, const char * replace_str);
-        string & replace(string & find_str, string & replace_str);
+        string &replace(const char *find_str, const char *replace_str);
+
+        string &replace(string &find_str, string &replace_str);
 
         // 查找第一个匹配的字符串，返回其下标，找不到返回-1
-        int find(const char * find_str);
+        int find(const char *find_str);
 
-        // 获取字串
-        string& substr(int begin, int end);
+        // 获取字符串的子串
+        string substr(int begin, int end) const;
 
         // 消除字符串两端的空格
         string &trim();
@@ -80,7 +84,7 @@ namespace bcat {
 
         // 将字符串中所有字母转小写
         string &to_lower_case();
-        
+
         // 将字符串中所有字母转大写
         string &to_upper_case();
 
