@@ -12,13 +12,16 @@ int main() {
         std::string str2("str2");
         std::string str3 = "str3";
         str1 = "str1";
-        cout << str2 << str3.length() << endl;
+        cout << str2 << str3.byte_length() << endl;
         if(str1 != str2){
             cout << "str2 == str3 is true" << endl;
         }
     }
 #endif
     {
+        bcat::string str("洛兮1");
+        cout << "length:" << str.length() << "  byte_lenth:" << str.byte_length() << endl;
+
         bcat::string str1{2103450345};
         str1[2] = '1';
         cout << "str1[2]:" << str1[2] << endl;
@@ -37,7 +40,7 @@ int main() {
         bcat::string str3("str3");
         str1 = "str1";
         str1 = "str2";
-        cout << str2 << str3.length() << endl;
+        cout << str2 << str3.byte_length() << endl;
         if (str1 == str2) {
             cout << "str2 = str3 is true" << endl;
         }

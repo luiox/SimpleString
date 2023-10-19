@@ -80,7 +80,45 @@ namespace bcat {
         return m_str;
     }
 
+    unsigned char utf8_code_bytes(unsigned char byte)
+    {
+        int bytes = 0;
+
+        if (byte <= 0x7F) { // then ASCII 占用1个字节
+            bytes = 1;
+        }
+        else if (byte >= 0xC0 && byte <= 0xDF) { // then 首字节   UTF-8 占用2个字节
+            bytes = 2;
+        }
+        else if (byte >= 0xE0 && byte <= 0xEF) { // then 首字节   UTF-8 占用3个字节
+            bytes = 3;
+        }
+        else if (byte >= 0xF0 && byte <= 0xF7) { // then 首字节   UTF-8 占用4个字节
+            bytes = 4;
+        }
+        else if (byte >= 0xF8 && byte <= 0xFB) { // then 首字节   UTF-8 占用5个字节
+            bytes = 5;
+        }
+        else if (byte >= 0xFC && byte <= 0xFD) { // then 首字节   UTF-8 占用6个字节
+            bytes = 6;
+        }
+        else if (byte > 0x7F && byte < 0xC0) { // then UTF-8   非首字节
+            bytes = 0;
+        }
+
+        return bytes;
+    }
+
     size_t string::length() const {
+        int length = 0;
+        for (size_t i = 0; i < m_length;) {
+            length += 1;
+            i += utf8_code_bytes(m_str[i]);
+        }
+        return length;
+    }
+
+    size_t string::byte_length() const {
         return m_length;
     }
 
@@ -162,7 +200,7 @@ namespace bcat {
     }
 
     bool string::compare(const string &other) const {
-        return m_length == other.length() && strcmp(m_str, other.m_str) == 0;
+        return m_length == other.byte_length() && strcmp(m_str, other.m_str) == 0;
     }
 
     string &string::to_lower_case() {

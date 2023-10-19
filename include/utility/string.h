@@ -40,8 +40,11 @@ namespace bcat {
         // 获取C风格的字符串指针
         const char *c_str();
 
-        // 获取字符串长度
+        // 获取字符串的长度
         [[nodiscard]] size_t length() const;
+
+        // 获取字符串的字节长度
+        [[nodiscard]] size_t byte_length() const;
 
         // 获取容量
         [[nodiscard]] size_t capacity() const;
