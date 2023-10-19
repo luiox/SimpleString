@@ -31,7 +31,7 @@ namespace bcat {
 
         explicit string(int val);
 
-        explicit string(const char *str);
+        string(const char *str);
 
         string(string &str);
 
@@ -62,8 +62,11 @@ namespace bcat {
 
         string &insert(string &str, int index);
 
-        // 删除字符串
+        // 删除部分字符串内容
         string &erase(int index, int size = 1);
+
+        // 删除全部字符串内容
+        string &clear();
 
         // 替换字符串
         string &replace(const char *find_str, const char *replace_str);

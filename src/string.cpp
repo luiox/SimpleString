@@ -198,6 +198,7 @@ namespace bcat {
             memmove(m_str + index + length - 1, m_str + index - 1, m_length - index + 1);
             strncpy(m_str + index, str, length);
             m_length += length;
+            m_str[m_length] = '\0';
         }
         return *this;
     }
@@ -218,6 +219,12 @@ namespace bcat {
         memmove(m_str + index, m_str + index + size, m_length - index - size);
         m_length -= size;
         m_str[m_length] = '\0';
+        return *this;
+    }
+
+    string &string::clear() {
+        m_length = 0;
+        m_str[0] = '\0';
         return *this;
     }
 
@@ -300,8 +307,19 @@ namespace bcat {
 
     string &string::to_lower_case() {
         for (int i = 0; i < m_length; i++) {
-            if (isalpha(static_cast<int>(m_str[i]))) {
-                m_str[i] = static_cast<char>(tolower(static_cast<int>(m_str[i])));
+            if (isalpha(static_cast<unsigned char>(m_str[i]))) {
+                if ((m_str[i] & 0xC0) == 0xC0) {
+                    // 处理中文字符的情况
+                    unsigned int unicodeChar = (m_str[i] & 0x1F) << 6;
+                    unicodeChar |= (m_str[i + 1] & 0x3F);
+                    unicodeChar = towlower(unicodeChar);
+                    m_str[i] = static_cast<char>((unicodeChar >> 6) | 0xC0);
+                    m_str[i + 1] = static_cast<char>((unicodeChar & 0x3F) | 0x80);
+                    i++; // 跳过下一个字节，因为已经处理过了
+                } else {
+                    m_str[i] = static_cast<char>(
+                            tolower(static_cast<unsigned char>(m_str[i]))); // 处理其他字符
+                }
             }
         }
         return *this;
@@ -309,10 +327,22 @@ namespace bcat {
 
     string &string::to_upper_case() {
         for (int i = 0; i < m_length; i++) {
-            if (isalpha(static_cast<int>(m_str[i]))) {
-                m_str[i] = static_cast<char>(toupper(static_cast<int>(m_str[i])));
+            if (isalpha(static_cast<unsigned char>(m_str[i]))) {
+                if ((m_str[i] & 0xC0) == 0xC0) {
+                    // 处理中文字符的情况
+                    unsigned int unicodeChar = (m_str[i] & 0x1F) << 6;
+                    unicodeChar |= (m_str[i + 1] & 0x3F);
+                    unicodeChar = towupper(unicodeChar);
+                    m_str[i] = static_cast<char>((unicodeChar >> 6) | 0xC0);
+                    m_str[i + 1] = static_cast<char>((unicodeChar & 0x3F) | 0x80);
+                    i++; // 跳过下一个字节，因为已经处理过了
+                } else {
+                    m_str[i] = static_cast<char>(
+                            toupper(static_cast<unsigned char>(m_str[i]))); // 处理其他字符
+                }
             }
         }
+
         return *this;
     }
 
