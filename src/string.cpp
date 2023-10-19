@@ -1,6 +1,7 @@
-﻿//
+﻿// Copyright (C) 2023 Canrad <canrad777@outlook.com>
 // Created by Canrad on 2023/10/11.
 //
+
 #include <cstring>
 #include <cctype>
 #include <exception>
