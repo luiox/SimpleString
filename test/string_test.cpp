@@ -25,6 +25,8 @@ int main() {
         bcat::string str1{2103450345};
         str1.insert("aaa", 3);
         str1.insert("bbb", 3);
+        str1.erase(3, 3);
+        str1.erase(3, 3);
         str1[2] = '1';
         cout << "str1[2]:" << str1[2] << endl;
         for (auto i: str1) {

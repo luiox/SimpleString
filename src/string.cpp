@@ -80,29 +80,22 @@ namespace bcat {
         return m_str;
     }
 
-    unsigned char utf8_code_bytes(unsigned char byte)
-    {
+    unsigned char utf8_code_bytes(unsigned char byte) {
         int bytes = 0;
 
         if (byte <= 0x7F) { // then ASCII 占用1个字节
             bytes = 1;
-        }
-        else if (byte >= 0xC0 && byte <= 0xDF) { // then 首字节   UTF-8 占用2个字节
+        } else if (byte >= 0xC0 && byte <= 0xDF) { // then 首字节   UTF-8 占用2个字节
             bytes = 2;
-        }
-        else if (byte >= 0xE0 && byte <= 0xEF) { // then 首字节   UTF-8 占用3个字节
+        } else if (byte >= 0xE0 && byte <= 0xEF) { // then 首字节   UTF-8 占用3个字节
             bytes = 3;
-        }
-        else if (byte >= 0xF0 && byte <= 0xF7) { // then 首字节   UTF-8 占用4个字节
+        } else if (byte >= 0xF0 && byte <= 0xF7) { // then 首字节   UTF-8 占用4个字节
             bytes = 4;
-        }
-        else if (byte >= 0xF8 && byte <= 0xFB) { // then 首字节   UTF-8 占用5个字节
+        } else if (byte >= 0xF8 && byte <= 0xFB) { // then 首字节   UTF-8 占用5个字节
             bytes = 5;
-        }
-        else if (byte >= 0xFC && byte <= 0xFD) { // then 首字节   UTF-8 占用6个字节
+        } else if (byte >= 0xFC && byte <= 0xFD) { // then 首字节   UTF-8 占用6个字节
             bytes = 6;
-        }
-        else if (byte > 0x7F && byte < 0xC0) { // then UTF-8   非首字节
+        } else if (byte > 0x7F && byte < 0xC0) { // then UTF-8   非首字节
             bytes = 0;
         }
 
@@ -174,29 +167,41 @@ namespace bcat {
         return *this;
     }
 
-    string & string::insert(const char * str, int index) {
+    string &string::insert(const char *str, int index) {
         if (index < 0 || index > m_length) {
             throw std::out_of_range("Index out of range.");
         }
         if (index == m_length - 1) {
             append(str);
-        }
-        else {
+        } else {
             auto length = strlen(str);
             if (m_length + length > m_capacity) {
                 expand(m_length + length > m_capacity * 2 ? m_length + length
                                                           : m_capacity * 2);
             }
-            memmove(m_str + index+length,m_str+index,m_length-index+1);
-            strncpy(m_str + index, str,length);
+            memmove(m_str + index + length, m_str + index, m_length - index + 1);
+            strncpy(m_str + index, str, length);
             m_length += length;
         }
         return *this;
     }
 
-    string & string::insert(string & str, int index) {
+    string &string::insert(string &str, int index) {
         // 预留优化空间，如果需要可以减少一次strlen
         insert(str.c_str(), index);
+        return *this;
+    }
+
+    string &string::erase(int index, int size) {
+        if (index < 0 || index > m_length - 1) {
+            throw std::out_of_range("Index out of range.");
+        }
+        if (size < 0 || size > m_length) {
+            throw std::out_of_range("Size out of range.");
+        }
+        memmove(m_str + index, m_str + index + size, m_length - index - size);
+        m_length -= size;
+        m_str[m_length] = '\0';
         return *this;
     }
 

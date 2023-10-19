@@ -55,9 +55,12 @@ namespace bcat {
         string &append(string &str);
 
         // 插入字符串
-        string & insert(const char * str, int index);
+        string &insert(const char *str, int index);
 
-        string & insert(string & str, int index);
+        string &insert(string &str, int index);
+
+        // 删除字符串
+        string &erase(int index, int size = 1);
 
         string &trim();
 
