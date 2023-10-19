@@ -179,7 +179,7 @@ namespace bcat {
                 expand(m_length + length > m_capacity * 2 ? m_length + length
                                                           : m_capacity * 2);
             }
-            memmove(m_str + index + length, m_str + index, m_length - index + 1);
+            memmove(m_str + index + length-1, m_str + index-1, m_length - index + 1);
             strncpy(m_str + index, str, length);
             m_length += length;
         }
@@ -202,6 +202,50 @@ namespace bcat {
         memmove(m_str + index, m_str + index + size, m_length - index - size);
         m_length -= size;
         m_str[m_length] = '\0';
+        return *this;
+    }
+
+    string& string::replace(const char* find_str, const char* replace_str) {
+        auto find_size = strlen(find_str);
+        auto replace_size = strlen(replace_str);
+        auto pos = 0;
+        for (int i = 0; i < m_length; i++) {
+            if (0 == strncmp(m_str, find_str, find_size)) {
+                pos = i;
+                break;
+            }
+        }
+        if (m_length - find_size+ replace_size > m_capacity) {
+            expand(m_capacity * 2);
+        }
+        erase(pos, find_size);
+        insert(replace_str, pos);
+        return *this;
+    }
+
+    string& string::replace(string& find_str, string& replace_str) {
+        return replace(find_str.m_str, replace_str.m_str);
+    }
+
+    int
+    string::find(const char * find_str)
+    {
+        auto find_size = strlen(find_str);
+        auto pos = -1;
+        for (int i = 0; i < m_length; i++) {
+            if (0 == strncmp(m_str+i, find_str, find_size)) {
+                pos = i;
+                break;
+            }
+        }
+        return pos;
+    }
+
+    string&
+    string::substr(int begin, int end)
+    {
+        //string ret("");
+        //return ret;
         return *this;
     }
 

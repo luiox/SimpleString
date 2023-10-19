@@ -62,16 +62,32 @@ namespace bcat {
         // 删除字符串
         string &erase(int index, int size = 1);
 
+        // 替换字符串
+        string & replace(const char * find_str, const char * replace_str);
+        string & replace(string & find_str, string & replace_str);
+
+        // 查找第一个匹配的字符串，返回其下标，找不到返回-1
+        int find(const char * find_str);
+
+        // 获取字串
+        string& substr(int begin, int end);
+
+        // 消除字符串两端的空格
         string &trim();
 
+        // 比较字符串
         [[nodiscard]] bool compare(const string &other) const;
 
+        // 将字符串中所有字母转小写
         string &to_lower_case();
-
+        
+        // 将字符串中所有字母转大写
         string &to_upper_case();
 
+        // 返回一个起始的迭代器
         string_iterator begin() noexcept;
 
+        // 返回一个末尾的迭代器
         string_iterator end() noexcept;
 
         string &operator=(const char *other);

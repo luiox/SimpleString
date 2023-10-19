@@ -20,6 +20,12 @@ int main() {
 #endif
     {
         bcat::string str("洛兮1");
+        //str.insert("1", 0);
+        auto it = str.find("洛兮");
+        
+        cout << it << endl;
+        //str.replace("洛兮", "暮秋");
+        cout << str << endl;
         cout << "length:" << str.length() << "  byte_lenth:" << str.byte_length() << endl;
 
         bcat::string str1{2103450345};
@@ -27,6 +33,7 @@ int main() {
         str1.insert("bbb", 3);
         str1.erase(3, 3);
         str1.erase(3, 3);
+       
         str1[2] = '1';
         cout << "str1[2]:" << str1[2] << endl;
         for (auto i: str1) {
