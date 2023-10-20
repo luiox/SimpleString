@@ -1,5 +1,5 @@
-target("string_test")
+﻿target("string")
     set_kind("binary")
+    add_defines("DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN")
     add_includedirs("include")
     add_files("src/*.cpp")
-    add_files("test/*.cpp")

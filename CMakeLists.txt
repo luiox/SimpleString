@@ -5,26 +5,28 @@
 # project
 cmake_minimum_required(VERSION 3.15.0)
 cmake_policy(SET CMP0091 NEW)
-project(string_test LANGUAGES CXX C)
+project(string LANGUAGES CXX C)
 
 # target
-add_executable(string_test "")
-set_target_properties(string_test PROPERTIES OUTPUT_NAME "string_test")
-set_target_properties(string_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/windows/x64/release")
-target_include_directories(string_test PRIVATE
-        include
+add_executable(string "")
+set_target_properties(string PROPERTIES OUTPUT_NAME "string")
+set_target_properties(string PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/windows/x64/release")
+target_include_directories(string PRIVATE
+    include
 )
-if (CMAKE_CXX_COMPILER_FRONTEND_VARIANT STREQUAL "MSVC")
-    target_compile_options(string_test PRIVATE /EHsc)
-else ()
-    target_compile_options(string_test PRIVATE -fcxx-exceptions)
-endif ()
-if (MSVC)
-    set_property(TARGET string_test PROPERTY
-            MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-endif ()
-target_sources(string_test PRIVATE
-        src/string.cpp
-        test/string_test.cpp
+target_compile_definitions(string PRIVATE
+    DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
+)
+if(MSVC)
+    target_compile_options(string PRIVATE /EHsc)
+else()
+    target_compile_options(string PRIVATE -fcxx-exceptions)
+endif()
+if(MSVC)
+    set_property(TARGET string PROPERTY
+        MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+endif()
+target_sources(string PRIVATE
+    src/string.cpp
 )
 
