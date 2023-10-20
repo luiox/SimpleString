@@ -1,5 +1,6 @@
 ﻿target("string")
     set_kind("binary")
+    add_includedirs("third_party/doctest/doctest")
     add_defines("DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN")
     add_includedirs("include")
     add_files("src/*.cpp")

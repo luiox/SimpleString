@@ -12,6 +12,7 @@ add_executable(string "")
 set_target_properties(string PROPERTIES OUTPUT_NAME "string")
 set_target_properties(string PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/windows/x64/release")
 target_include_directories(string PRIVATE
+    third_party/doctest/doctest
     include
 )
 target_compile_definitions(string PRIVATE
