@@ -35,6 +35,8 @@ namespace bcat {
 
         string(string &str);
 
+        string(string && str);
+
         ~string();
 
         // 获取C风格的字符串指针
@@ -100,6 +102,8 @@ namespace bcat {
         string &operator=(const char *other);
 
         string &operator=(const string &other);
+
+        string & operator=(string && other);
 
         bool operator==(const string &other);
 
